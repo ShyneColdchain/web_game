@@ -35,7 +35,7 @@ def convert(snippet, phrase):
     class_names = [w.capitalize() for w in 
                     random.sample(WORDS, snippet.count("%%%"))]
     other_names = random.sample(WORDS, snippet.count("***"))
-    result = []
+    results = []
     param_names = []
     
     for i in range(0, snippet.count("@@@")):
@@ -65,7 +65,7 @@ def convert(snippet, phrase):
 # keep going until they hit CTRL-D
 try:
     while True:
-        snippets = PHRASES.key()
+        snippets = PHRASES.keys()
         random.shuffle(snippets)
         
         for snippet in snippets:
