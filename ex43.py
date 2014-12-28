@@ -225,5 +225,6 @@ def main():
     a_game = Engine(a_map)
     a_game.play()
     
-main()
+if __name__ == '__main__':
+    main()
     
