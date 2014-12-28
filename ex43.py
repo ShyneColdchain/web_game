@@ -1,30 +1,36 @@
 from sys import exit
 from random import randint
-
+ 
 class Scene(object):
-    
+    """
+    Base class for scenes. Has attributes for all scenes. 
+    """
+
     def enter(self):
         print "Scene not yet configured"
         exit(1)
-        
+
 class Engine(object):
-    
+    """
+    Run game. Use methods from Map class. 
+    """
+
     def __init__(self, scene_map):
         self.scene_map = scene_map
-        
+
     def play(self):
-        # pass on (inherit) to Map(object)
+        # use Map class methods
         current_scene = self.scene_map.opening_scene()
         last_scene = self.scene_map.next_scene('finished')
-        
+
         # last_scene = 'finished'
         # when the current_scene = 'finished, won game
         while current_scene != last_scene:
             next_scene_name = current_scene.enter()
             current_scene = self.scene_map.next_scene(next_scene_name)
-            
+    
         # be sure to print out the last scene
-        current_scene.enter()
+        current_scene.enter() 
         
 class Death(Scene):
     
@@ -104,7 +110,7 @@ class LaserWeaponArmory(Scene):
         guesses = 0
 
         # +1 for each wrong guess, exit on 10
-        while guess != code and guesses < 10:
+        while guess != code and guesses < 9:
             print "BZZZZEDDD!"
             guesses += 1
             guess = raw_input("[keypad]> ")
