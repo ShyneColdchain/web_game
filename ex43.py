@@ -13,6 +13,7 @@ class Engine(object):
         self.scene_map = scene_map
         
     def play(self):
+        # pass on (inherit) to Map(object)
         current_scene = self.scene_map.opening_scene()
         last_scene = self.scene_map.next_scene('finished')
         
