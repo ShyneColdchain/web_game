@@ -9,6 +9,11 @@ class Scene(object):
         print "Bad scene..."
         exit(1)
         
+class Turnstile(Scene):
+
+    def enter(self):
+       pass
+        
 class Engine(object):
 
     def __init__(self, scene_map):
@@ -38,16 +43,20 @@ class End(Scene):
         print End.end[randint(0, len(self.end) - 1)]
         exit(1)
         
-class Locked(Scene):
+class Locked(Turnstile):
     
     def enter(self):
         print "\nThe turnstile is locked. You are stuck where you are."
         print "Remember: do NOT 'Hit' machines. They are friends."
+        print "Also: you can visit the 'Casino' at any time for more money."
         print "Should you 'Push' or 'Insert' a coin?"
         
         action = raw_input("> ")
         
-        if action == "Hit":
+        if action == "Casino":
+            return 'casino'
+        
+        elif action == "Hit":
             print "\nYou punch the machine and alarmed security..."
             print "Uh oh! It looks like they are coming over to take you away."
             return 'end'
@@ -55,7 +64,7 @@ class Locked(Scene):
         ##############################    
         elif action == "Push":
             print "\nYou push against the locked machine..."
-            return 'scene3'
+            return 'casino'
         ############################## 
             
         elif action == "Insert":
@@ -66,7 +75,7 @@ class Locked(Scene):
             print "\nCannot understand input."
             return 'locked'
         
-class Unlocked(Scene):
+class Unlocked(Turnstile):
     
     # unlocked should be on a timer? 
     def __init__(self):
@@ -75,17 +84,20 @@ class Unlocked(Scene):
     def enter(self):
         print "\nThe machine is unlocked."
         print "Remember: do NOT 'Hit' machines. They are friends."
+        print "Also: you can visit the 'Casino' at any time for more money."
         print "Should you 'Push' or 'Insert' a coin?"
         
         action = raw_input("> ")
         
-        if action == "Hit":
+        if action == "Casino":
+            return 'casino'
+        
+        elif action == "Hit":
             print "\nYou punch the machine, causing it to lock again!"
             return 'locked'
             
         elif action == "Push":
             print "\nYou push against the unlocked machine."
-            print "It turns and you walk through into the lobby."
             return 'lobby'
             
         elif action == "Insert":
@@ -104,40 +116,79 @@ class Lobby(Scene):
         print "There are four trains about to leave for your city."
         print "No signs. No indication of direction..."
         print "Which train do you pick?"
+        print "Also: you can visit the 'Casino' at any time for more money."
         
         good_train = randint(1, 4)
         your_train = raw_input("Train #> ")
+        int_train = int(your_train)
         
-        if int(your_train) != good_train:
-            print "\nYou get into the %sth train and it takes off." % your_train
+        if int_train == 1:
+            suffix = "st"
+            
+        elif int_train == 2:
+            suffix = "nd"
+            
+        elif int_train == 3:
+            suffix = "rd"
+            
+        elif int_train == 4:
+            suffix = "rd"
+            
+        else: 
+            print "\nCannot understand input."
+            return 'unlocked'
+            
+        if your_train == "Casino":
+            return 'casino'    
+        
+        elif int_train != good_train:
+            print "\nYou get into the %s%s train and it takes off." % (your_train, suffix)
             print "However, it starts going in the wrong direction!"
             return 'end'
             
         else:
-            print "\nYou get into the %sth train and it takes off." % your_train
+            print "\nYou get into the %s%s train and it takes off." % (your_train, suffix)
             print "It takes you home. When you get there you make yourself"
             print "some food and then go to sleep."
             return 'done'
         
-class Scene3(Scene):
+class Casino(Scene):
     
     def enter(self):
-        print "Scene3"
+        print "Casino - let's make some money!"
+        print "Get two of the same for a little money"
+        print "and three of the same for a TON!"
+        
+        slots = [
+            "donkey", "horse", 
+            "seven", "cowboy", 
+        ]
+        
+        # subtract money for each play
+        first_slot = slots[int(randint(0, 3))]
+        second_slot = slots[int(randint(0, 3))]
+        third_slot = slots[int(randint(0, 3))]
+        
+        print first_slot
+        print second_slot
+        print third_slot
+        
+        return 'locked' 
+       
         
 class Done(Scene):
     
     def enter(self):
         print "\nYou won the game!"
-        return 'done'
-        
+        return 'done'       
         
 class Map(object):
     
     scenes = {
         'locked': Locked(),
+        'casino': Casino(),
         'unlocked': Unlocked(),
         'lobby': Lobby(),
-        'scene3': Scene3(),
         'end': End(),
         'done': Done(),
     }
