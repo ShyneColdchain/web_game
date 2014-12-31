@@ -28,8 +28,7 @@ class Wallet(object):
 class Scene(object):
     
     def __init__(self):
-        if(check):      # if first time, set money to 30
-            self.money = 30
+        self.money = 30
         #self.other = Wallet()
  
     def set_money(self, money):
@@ -84,10 +83,10 @@ class Engine(object):
 class End(Scene):
     
     end = [
-        "You lost",
-        "...game over, buddy...",
-        "The game has ended...",
-        "You are a horse"
+        "\nYou lost\n",
+        "\n...game over, buddy...\n",
+        "\nThe game has ended...\n",
+        "\nYou are a horse...\nbetter luck next time...\n"
     ]
     
     # choose random ending sequence
@@ -249,8 +248,8 @@ class Casino(Scene):
 class Done(Scene):
     
     def enter(self):
-        print "\nYou won the game!"
-        return 'done'       
+        print "\nYou won the game!\n"
+        exit(1)
         
 class Map(object):
     
