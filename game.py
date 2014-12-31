@@ -272,11 +272,9 @@ class Map(object):
         
     def opening_scene(self):
         return self.next_scene(self.start_scene)
- 
-def main():
+        
+if __name__ == '__main__':
     a_map = Map('locked')
     a_game = Engine(a_map)
     a_game.play()
-        
-if __name__ == '__main__':
     main()
