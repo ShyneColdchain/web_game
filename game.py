@@ -1,44 +1,71 @@
 from sys import exit
 from random import randint 
 
-import wallet 
+import costs 
 
-"""
 class Wallet(object):
     
-    def __init__(self, money):
-        self.money = money
+    # money is property of object
+    _money = 30
     
-    def double(self):
-        self.money += 5
+    #def __init__(self):
+    #    self.money = Wallet.money
+     
+    # object (money) as property
+    @property
+    def money(self):
+        return self.__class__._money
         
-    def triple(self):
-        self.money += 20
+    @money.setter
+    def money(self, value):
+        self.__class__._money = value    
+        
+    def check_money(self):
+        if self.money <= 0:
+            print "You are out of money!"
+            return False
+        else:
+            print "\nYou have $%i left in your wallet." % self.money
+            return True
+        
+    def get_money(self):
+        print "Money in wallet: ", self.money
+        self.money = self.money
         
     def turn_cost(self):
-        self.money -= 2
-        
-    def casino_cost(self):
-        self.money -= 3
+        self.money = costs.turn_cost(self.money)
+        print "After turn...", self.money
         
     def train_cost(self):
-        self.money -= 5
-"""
+        self.money = costs.train_cost(self.money)
+        
+    def casino_cost(self):
+        self.money = costs.casino_cost(self.money)
+        
+    def double(self):
+        self.money = costs.double(self.money)
+        
+    def triple(self):
+        self.money = costs.triple(self.money)
+
 
 # shared attributes for all Scenes
 # money goes through all scenes
-# money handled through wallet module 
+# money in Wallet class
+# + and - money through costs module  
 class Scene(object):
     
-    def __init__(self, money):
-        self.money = money 
+    def __init__(self):
+        # composition -> get methods from class Wallet()
+        self.wallet = Wallet()
+        #self.money = wallet.get_money() 
     
     def enter(self):
         print "Bad scene..."
         exit(1)
         
     def check_wallet(self):
-        have_money = wallet.prompt_money(self.money)
+        have_money = self.wallet.check_money()
         
         # end on no money
         if not (have_money):
@@ -53,9 +80,10 @@ class Engine(object):
 
     def __init__(self, scene_map):
         self.scene_map = scene_map
+        #self.money = wallet.start_money()
 
     def play(self):
-        #money = wallet.start_money
+        #money = wallet.start_money()
         current_scene = self.scene_map.opening_scene()
         last_scene = self.scene_map.next_scene('done')
 
@@ -104,7 +132,8 @@ class Locked(Scene):
             
         elif action == "Insert":
             print "\nYou insert a coin into the machine."
-            wallet.turn_cost(self.money)
+            self.wallet.turn_cost()
+            self.wallet.get_money()
             return 'unlocked'
             
         else:
@@ -133,7 +162,8 @@ class Unlocked(Scene):
             
         elif action == "Insert":
             print "\nYou insert a coin into the machine."
-            wallet.turn_cost(self.money)
+            self.wallet.turn_cost()
+            self.wallet.get_money()
             return 'unlocked'
             
         else:
@@ -158,7 +188,7 @@ class Lobby(Scene):
             return 'casino'
             
         else:
-            wallet.train_cost(self.money)
+            self.wallet.train_cost()
             int_train = int(your_train)
         
         if int_train == 1:
@@ -192,7 +222,7 @@ class Casino(Scene):
     
     def enter(self):
         self.check_wallet()
-        wallet.casino_cost(self.money)
+        self.wallet.casino_cost()
         print "Casino - let's make some money!"
         print "\nGet two of the same for a little money"
         print "and three of the same for a TON!\n"
@@ -214,13 +244,13 @@ class Casino(Scene):
         if (first_slot == second_slot == third_slot):
             
             print "\nAll three!\n"
-            wallet.triple(self.money)
+            self.wallet.triple()
             
         elif ((first_slot == second_slot) or 
             (second_slot == third_slot) or (first_slot == third_slot)):
             
             print "\nYou got two!\n"
-            wallet.double(self.money)
+            self.wallet.double()
             
         else:
             
@@ -238,8 +268,8 @@ class Done(Scene):
         
 class Map(object):
     # start wallet - only once
-    money = wallet.start_money()
-    
+    #money = wallet.start_money()
+    """
     scenes = {
        'locked': Locked(money),
        'casino': Casino(money),
@@ -248,9 +278,21 @@ class Map(object):
        'end': End(money),
        'done': Done(money),
     }
+    """
+    money = 30
+    
+    scenes = {
+       'locked': Locked(),
+       'casino': Casino(),
+       'unlocked': Unlocked(),
+       'lobby': Lobby(),
+       'end': End(),
+       'done': Done(),
+    }
     
     def __init__(self, start_scene):
         self.start_scene = start_scene
+        self.money = Map.money
             
     def next_scene(self, scene_name):
         scene = Map.scenes.get(scene_name)
