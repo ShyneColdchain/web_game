@@ -6,7 +6,7 @@ import costs
 class Wallet(object):
     
     # money is property of object
-    _money = 30
+    _money = 10
     
     #def __init__(self):
     #    self.money = Wallet.money
@@ -66,10 +66,12 @@ class Scene(object):
         
     def check_wallet(self):
         have_money = self.wallet.check_money()
+        print have_money
         
         # end on no money
-        if not (have_money):
-            return 'end'   
+        if have_money == False:
+            print "...you are stranded. Game over..."
+            exit(1)
         
     def prompt_turnstile(self):
         print "Remember: do NOT 'Hit' machines. They are friends."
