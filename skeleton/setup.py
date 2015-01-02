@@ -11,9 +11,9 @@ config = {
     'author_email': 'olivermuellerklein@gmail.com',
     'version': '0.1',
     'install_requires': ['nose'],
-    'packages': ['NAME'],
-    'scripts': [],
-    'name': 'projectname'
+    'packages': ['web_game'],
+    'scripts': ['bin/run_game.py'],
+    'name': 'game'
 }
 
 setup(**config)
