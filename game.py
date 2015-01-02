@@ -7,9 +7,6 @@ class Wallet(object):
     
     # money is property of object
     _money = 10
-    
-    #def __init__(self):
-    #    self.money = Wallet.money
      
     # object (money) as property
     @property
@@ -30,11 +27,9 @@ class Wallet(object):
         
     def get_money(self):
         print "Money in wallet: ", self.money
-        self.money = self.money
         
     def turn_cost(self):
         self.money = costs.turn_cost(self.money)
-        print "After turn...", self.money
         
     def train_cost(self):
         self.money = costs.train_cost(self.money)
@@ -58,7 +53,6 @@ class Scene(object):
     def __init__(self):
         # composition -> get methods from class Wallet()
         self.wallet = Wallet()
-        #self.money = wallet.get_money() 
     
     def enter(self):
         print "Bad scene..."
@@ -66,7 +60,6 @@ class Scene(object):
         
     def check_wallet(self):
         have_money = self.wallet.check_money()
-        print have_money
         
         # end on no money
         if have_money == False:
@@ -82,10 +75,8 @@ class Engine(object):
 
     def __init__(self, scene_map):
         self.scene_map = scene_map
-        #self.money = wallet.start_money()
 
     def play(self):
-        #money = wallet.start_money()
         current_scene = self.scene_map.opening_scene()
         last_scene = self.scene_map.next_scene('done')
 
@@ -125,17 +116,15 @@ class Locked(Scene):
             print "\nYou punch the machine and alarmed security..."
             print "Uh oh! It looks like they are coming over to take you away."
             return 'end'
-         
-        ##############################    
+            
         elif action == "Push":
             print "\nYou push against the locked machine..."
-            return 'locked'
-        ############################## 
+            return 'locked' 
             
         elif action == "Insert":
             print "\nYou insert a coin into the machine."
             self.wallet.turn_cost()
-            self.wallet.get_money()
+            #self.wallet.get_money()
             return 'unlocked'
             
         else:
@@ -165,7 +154,7 @@ class Unlocked(Scene):
         elif action == "Insert":
             print "\nYou insert a coin into the machine."
             self.wallet.turn_cost()
-            self.wallet.get_money()
+            #self.wallet.get_money()
             return 'unlocked'
             
         else:
@@ -269,19 +258,6 @@ class Done(Scene):
         exit(1)
         
 class Map(object):
-    # start wallet - only once
-    #money = wallet.start_money()
-    """
-    scenes = {
-       'locked': Locked(money),
-       'casino': Casino(money),
-       'unlocked': Unlocked(money),
-       'lobby': Lobby(money),
-       'end': End(money),
-       'done': Done(money),
-    }
-    """
-    money = 30
     
     scenes = {
        'locked': Locked(),
@@ -294,18 +270,15 @@ class Map(object):
     
     def __init__(self, start_scene):
         self.start_scene = start_scene
-        self.money = Map.money
             
     def next_scene(self, scene_name):
         scene = Map.scenes.get(scene_name)
-        #scene = Map.dict_scenes(scene_name)
         return scene
         
     def opening_scene(self):
         return self.next_scene(self.start_scene)
         
 if __name__ == '__main__':
-    #money = wallet.start_money()
     a_map = Map('locked')
     a_game = Engine(a_map)
     a_game.play()
