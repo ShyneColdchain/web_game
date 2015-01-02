@@ -4,16 +4,16 @@ except:
     from distutils.core import setup
     
 config = {
-    'description': 'My Project',
+    'description': 'Automated testing',
     'author': 'Oliver Muellerklein',
     'url': 'https://github.com/ShyneColdchain/FILENAME',
     'download_url': 'Where to download it.',
     'author_email': 'olivermuellerklein@gmail.com',
     'version': '0.1',
     'install_requires': ['nose'],
-    'packages': ['NAME'],
+    'packages': ['ex47'],
     'scripts': [],
-    'name': 'projectname'
+    'name': 'ex47'
 }
 
 setup(**config)
