@@ -52,6 +52,7 @@ class Scene(object):
     
     def __init__(self):
         # composition -> get methods from class Wallet()
+        #self.name = ""
         self.wallet = Wallet() 
         
         """ LOOK INTO WALLET METHODS
@@ -111,13 +112,15 @@ class End(Scene):
     
     # choose random ending sequence
     def enter(self):
+        self.name = "End"
         print End.end[randint(0, len(self.end) - 1)]
         exit(1)
         
 class Locked(Scene):
-        
+    
     def enter(self):
         print "\nThe turnstile is locked. You are stuck where you are."
+        self.name = "Locked"
         self.check_wallet()
         self.prompt_turnstile()
         
@@ -149,6 +152,7 @@ class Unlocked(Scene):
     
     def enter(self):
         print "\nThe machine is unlocked."
+        self.name = "Unlocked"
         self.check_wallet()
         self.prompt_turnstile()
         
@@ -182,6 +186,7 @@ class Lobby(Scene):
         print "\nYou pass through the turnstile and into the lobby."
         print "There are four trains about to leave for your city."
         print "No signs. No indication of direction..."
+        self.name = "Train Lobby"
         self.check_wallet()
         print "Which train do you pick?"
         print "Also: you can visit the 'Casino' at any time for more money."
@@ -228,6 +233,7 @@ class Casino(Scene):
     def enter(self):
         self.check_wallet()
         self.wallet.casino_cost()
+        self.name = "Casino"
         print "Casino - let's make some money!"
         print "\nGet two of the same for a little money"
         print "and three of the same for a TON!\n"
@@ -268,6 +274,7 @@ class Casino(Scene):
 class Done(Scene):
     
     def enter(self):
+        self.name = "Done"
         print "\nYou won the game!\n"
         exit(1)
         
@@ -284,6 +291,7 @@ class Map(object):
     
     def __init__(self, start_scene):
         self.start_scene = start_scene
+        self.name = ""
             
     def next_scene(self, scene_name):
         scene = Map.scenes.get(scene_name)
@@ -291,9 +299,12 @@ class Map(object):
         
     def opening_scene(self):
         return self.next_scene(self.start_scene)
-        
-if __name__ == '__main__':
-    a_map = Map('locked')
-    a_game = Engine(a_map)
-    a_game.play()
-    main()
+
+a_map = Map('locked')
+START = a_map        
+#if __name__ == '__main__':
+    #a_map = Map('locked')
+    #a_game = Engine(a_map)
+    #a_game.play()
+    #START = a_map
+    #main()
