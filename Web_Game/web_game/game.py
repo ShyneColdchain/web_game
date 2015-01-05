@@ -52,8 +52,22 @@ class Scene(object):
     
     def __init__(self):
         # composition -> get methods from class Wallet()
-        self.wallet = Wallet()
-    
+        self.wallet = Wallet() 
+        
+        """ LOOK INTO WALLET METHODS
+        
+        print "\n----------------"
+        print dir(self.wallet._money)
+        print "\n", self.wallet._money
+        print "################\n"
+        print dir(self.wallet.turn_cost())
+        self.wallet.turn_cost()
+        print "\nAFTER TURN_COST: ", self.wallet._money
+        print "################\n"
+        print dir(self.wallet.turn_cost.im_self._money)
+        print "------------\n
+        """
+            
     def enter(self):
         print "Bad scene..."
         exit(1)
