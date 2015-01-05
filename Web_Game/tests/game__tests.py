@@ -1,11 +1,10 @@
 from nose.tools import *
-import web_game
+from web_game.game import * 
 
-def setup():
-    print "SETUP"
-    
-def teardown():
-    print "TEAR DOWN"
-    
-def test_basic():
-    print "I RAN"
+def test_wallet():
+    money = Wallet()
+    assert_equal(money._money, 10)
+
+def test_engine():
+    engine = Engine('foo()')
+    assert_equal(engine.scene_map, 'foo()')
